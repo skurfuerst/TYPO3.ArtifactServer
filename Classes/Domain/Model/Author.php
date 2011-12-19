@@ -10,16 +10,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Packagist\WebBundle\Entity;
+namespace TYPO3\Repository\Domain\Model;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\ExecutionContext;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @ORM\Entity(repositoryClass="Packagist\WebBundle\Entity\AuthorRepository")
- * @ORM\Table(name="author")
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
 class Author
@@ -49,12 +45,12 @@ class Author
     private $homepage;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Packagist\WebBundle\Entity\Version", mappedBy="authors")
+     * @ORM\ManyToMany(targetEntity="TYPO3\Repository\Domain\Model\Version", mappedBy="authors")
      */
     private $versions;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Packagist\WebBundle\Entity\User", inversedBy="authors")
+     * @ORM\ManyToOne(targetEntity="TYPO3\Repository\Domain\Model\User", inversedBy="authors")
      */
     private $owner;
 
@@ -136,7 +132,7 @@ class Author
     /**
      * Add versions
      *
-     * @param Packagist\WebBundle\Entity\Version $version
+     * @param TYPO3\Repository\Domain\Model\Version $version
      */
     public function addVersion(Version $version)
     {
@@ -216,7 +212,7 @@ class Author
     /**
      * Set owner
      *
-     * @param Packagist\WebBundle\Entity\User $owner
+     * @param TYPO3\Repository\Domain\Model\User $owner
      */
     public function setOwner(User $owner)
     {
@@ -226,7 +222,7 @@ class Author
     /**
      * Get owner
      *
-     * @return Packagist\WebBundle\Entity\User
+     * @return TYPO3\Repository\Domain\Model\User
      */
     public function getOwner()
     {

@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Packagist\WebBundle\Entity;
+namespace TYPO3\Repository\Domain\Model;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -96,9 +96,9 @@ abstract class PackageLink
     /**
      * Set version
      *
-     * @param Packagist\WebBundle\Entity\Version $version
+     * @param TYPO3\Repository\Domain\Model\Version $version
      */
-    public function setVersion(\Packagist\WebBundle\Entity\Version $version)
+    public function setVersion(\TYPO3\Repository\Domain\Model\Version $version)
     {
         $this->version = $version;
     }
@@ -106,7 +106,7 @@ abstract class PackageLink
     /**
      * Get version
      *
-     * @return Packagist\WebBundle\Entity\Version
+     * @return TYPO3\Repository\Domain\Model\Version
      */
     public function getVersion()
     {

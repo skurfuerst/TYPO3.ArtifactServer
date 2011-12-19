@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Packagist\WebBundle\Entity;
+namespace TYPO3\Repository\Domain\Model;
 
 use Doctrine\ORM\EntityRepository;
 

@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Packagist\WebBundle\Entity;
+namespace TYPO3\Repository\Domain\Model;
 
 use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
@@ -35,7 +35,7 @@ class User extends BaseUser
     private $packages;
 
     /**
-     * @ORM\OneToMany(targetEntity="Packagist\WebBundle\Entity\Author", mappedBy="owner")
+     * @ORM\OneToMany(targetEntity="TYPO3\Repository\Domain\Model\Author", mappedBy="owner")
      */
     private $authors;
 
@@ -63,7 +63,7 @@ class User extends BaseUser
     /**
      * Add packages
      *
-     * @param Packagist\WebBundle\Entity\Package $packages
+     * @param TYPO3\Repository\Domain\Model\Package $packages
      */
     public function addPackages(Package $packages)
     {
@@ -83,9 +83,9 @@ class User extends BaseUser
     /**
      * Add authors
      *
-     * @param Packagist\WebBundle\Entity\Author $authors
+     * @param TYPO3\Repository\Domain\Model\Author $authors
      */
-    public function addAuthors(\Packagist\WebBundle\Entity\Author $authors)
+    public function addAuthors(\TYPO3\Repository\Domain\Model\Author $authors)
     {
         $this->authors[] = $authors;
     }

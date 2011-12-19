@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Packagist\WebBundle\Entity;
+namespace TYPO3\Repository\Domain\Model;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ProvideLink extends PackageLink
 {
     /**
-     * @ORM\ManyToOne(targetEntity="Packagist\WebBundle\Entity\Version", inversedBy="provide")
+     * @ORM\ManyToOne(targetEntity="TYPO3\Repository\Domain\Model\Version", inversedBy="provide")
      */
     protected $version;
 }

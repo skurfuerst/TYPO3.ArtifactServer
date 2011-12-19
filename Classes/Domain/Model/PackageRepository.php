@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Packagist\WebBundle\Entity;
+namespace TYPO3\Repository\Domain\Model;
 
 use Doctrine\ORM\EntityRepository;
 
@@ -23,7 +23,7 @@ class PackageRepository extends EntityRepository
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('p, v')
-            ->from('Packagist\WebBundle\Entity\Package', 'p')
+            ->from('TYPO3\Repository\Domain\Model\Package', 'p')
             ->leftJoin('p.versions', 'v')
             ->where('p.crawledAt IS NULL OR p.crawledAt < ?0')
             ->setParameters(array(new \DateTime('-1hour')));
@@ -34,7 +34,7 @@ class PackageRepository extends EntityRepository
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('p, v, t')
-            ->from('Packagist\WebBundle\Entity\Package', 'p')
+            ->from('TYPO3\Repository\Domain\Model\Package', 'p')
             ->leftJoin('p.versions', 'v')
             ->leftJoin('v.tags', 't')
             ->where('p.indexedAt IS NULL OR p.indexedAt < ?0')
@@ -73,7 +73,7 @@ class PackageRepository extends EntityRepository
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('p, v, t, m')
-            ->from('Packagist\WebBundle\Entity\Package', 'p')
+            ->from('TYPO3\Repository\Domain\Model\Package', 'p')
             ->leftJoin('p.versions', 'v')
             ->leftJoin('p.maintainers', 'm')
             ->leftJoin('v.tags', 't')

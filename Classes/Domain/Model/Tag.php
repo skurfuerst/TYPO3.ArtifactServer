@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Packagist\WebBundle\Entity;
+namespace TYPO3\Repository\Domain\Model;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -36,7 +36,7 @@ class Tag
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Packagist\WebBundle\Entity\Version", mappedBy="tags")
+     * @ORM\ManyToMany(targetEntity="TYPO3\Repository\Domain\Model\Version", mappedBy="tags")
      */
     private $versions;
 
@@ -85,9 +85,9 @@ class Tag
     /**
      * Add versions
      *
-     * @param Packagist\WebBundle\Entity\Version $versions
+     * @param TYPO3\Repository\Domain\Model\Version $versions
      */
-    public function addVersions(\Packagist\WebBundle\Entity\Version $versions)
+    public function addVersions(\TYPO3\Repository\Domain\Model\Version $versions)
     {
         $this->versions[] = $versions;
     }

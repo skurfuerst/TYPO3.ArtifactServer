@@ -10,13 +10,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Packagist\WebBundle\Entity;
+namespace TYPO3\Repository\Domain\Model;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="Packagist\WebBundle\Entity\VersionRepository")
+ * @ORM\Entity(repositoryClass="TYPO3\Repository\Domain\Model\VersionRepository")
  * @ORM\Table(
  *     name="package_version",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="pkg_ver_idx",columns={"package_id","normalizedVersion"})}
@@ -59,7 +59,7 @@ class Version
     private $extra = array();
 
     /**
-     * @ORM\ManyToMany(targetEntity="Packagist\WebBundle\Entity\Tag", inversedBy="versions")
+     * @ORM\ManyToMany(targetEntity="TYPO3\Repository\Domain\Model\Tag", inversedBy="versions")
      * @ORM\JoinTable(name="version_tag",
      *     joinColumns={@ORM\JoinColumn(name="version_id", referencedColumnName="id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id")}
@@ -68,8 +68,8 @@ class Version
     private $tags;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Packagist\WebBundle\Entity\Package", fetch="EAGER", inversedBy="versions")
-     * @Assert\Type(type="Packagist\WebBundle\Entity\Package")
+     * @ORM\ManyToOne(targetEntity="TYPO3\Repository\Domain\Model\Package", fetch="EAGER", inversedBy="versions")
+     * @Assert\Type(type="TYPO3\Repository\Domain\Model\Package")
      */
     private $package;
 
@@ -103,7 +103,7 @@ class Version
     private $license;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Packagist\WebBundle\Entity\Author", inversedBy="versions")
+     * @ORM\ManyToMany(targetEntity="TYPO3\Repository\Domain\Model\Author", inversedBy="versions")
      * @ORM\JoinTable(name="version_author",
      *     joinColumns={@ORM\JoinColumn(name="version_id", referencedColumnName="id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="author_id", referencedColumnName="id")}
@@ -112,32 +112,32 @@ class Version
     private $authors;
 
     /**
-     * @ORM\OneToMany(targetEntity="Packagist\WebBundle\Entity\RequireLink", mappedBy="version")
+     * @ORM\OneToMany(targetEntity="TYPO3\Repository\Domain\Model\RequireLink", mappedBy="version")
      */
     private $require;
 
     /**
-     * @ORM\OneToMany(targetEntity="Packagist\WebBundle\Entity\ReplaceLink", mappedBy="version")
+     * @ORM\OneToMany(targetEntity="TYPO3\Repository\Domain\Model\ReplaceLink", mappedBy="version")
      */
     private $replace;
 
     /**
-     * @ORM\OneToMany(targetEntity="Packagist\WebBundle\Entity\ConflictLink", mappedBy="version")
+     * @ORM\OneToMany(targetEntity="TYPO3\Repository\Domain\Model\ConflictLink", mappedBy="version")
      */
     private $conflict;
 
     /**
-     * @ORM\OneToMany(targetEntity="Packagist\WebBundle\Entity\ProvideLink", mappedBy="version")
+     * @ORM\OneToMany(targetEntity="TYPO3\Repository\Domain\Model\ProvideLink", mappedBy="version")
      */
     private $provide;
 
     /**
-     * @ORM\OneToMany(targetEntity="Packagist\WebBundle\Entity\RecommendLink", mappedBy="version")
+     * @ORM\OneToMany(targetEntity="TYPO3\Repository\Domain\Model\RecommendLink", mappedBy="version")
      */
     private $recommend;
 
     /**
-     * @ORM\OneToMany(targetEntity="Packagist\WebBundle\Entity\SuggestLink", mappedBy="version")
+     * @ORM\OneToMany(targetEntity="TYPO3\Repository\Domain\Model\SuggestLink", mappedBy="version")
      */
     private $suggest;
 
@@ -500,7 +500,7 @@ class Version
     /**
      * Set package
      *
-     * @param Packagist\WebBundle\Entity\Package $package
+     * @param TYPO3\Repository\Domain\Model\Package $package
      */
     public function setPackage(Package $package)
     {
@@ -510,7 +510,7 @@ class Version
     /**
      * Get package
      *
-     * @return Packagist\WebBundle\Entity\Package $package
+     * @return TYPO3\Repository\Domain\Model\Package $package
      */
     public function getPackage()
     {
@@ -640,9 +640,9 @@ class Version
     /**
      * Add tags
      *
-     * @param Packagist\WebBundle\Entity\Tag $tags
+     * @param TYPO3\Repository\Domain\Model\Tag $tags
      */
-    public function addTag(\Packagist\WebBundle\Entity\Tag $tags)
+    public function addTag(\TYPO3\Repository\Domain\Model\Tag $tags)
     {
         $this->tags[] = $tags;
     }
@@ -650,9 +650,9 @@ class Version
     /**
      * Add authors
      *
-     * @param Packagist\WebBundle\Entity\Author $authors
+     * @param TYPO3\Repository\Domain\Model\Author $authors
      */
-    public function addAuthor(\Packagist\WebBundle\Entity\Author $authors)
+    public function addAuthor(\TYPO3\Repository\Domain\Model\Author $authors)
     {
         $this->authors[] = $authors;
     }
@@ -660,7 +660,7 @@ class Version
     /**
      * Add require
      *
-     * @param Packagist\WebBundle\Entity\RequireLink $require
+     * @param TYPO3\Repository\Domain\Model\RequireLink $require
      */
     public function addRequireLink(RequireLink $require)
     {
@@ -680,7 +680,7 @@ class Version
     /**
      * Add replace
      *
-     * @param Packagist\WebBundle\Entity\ReplaceLink $replace
+     * @param TYPO3\Repository\Domain\Model\ReplaceLink $replace
      */
     public function addReplaceLink(ReplaceLink $replace)
     {
@@ -700,7 +700,7 @@ class Version
     /**
      * Add conflict
      *
-     * @param Packagist\WebBundle\Entity\ConflictLink $conflict
+     * @param TYPO3\Repository\Domain\Model\ConflictLink $conflict
      */
     public function addConflictLink(ConflictLink $conflict)
     {
@@ -720,7 +720,7 @@ class Version
     /**
      * Add provide
      *
-     * @param Packagist\WebBundle\Entity\ProvideLink $provide
+     * @param TYPO3\Repository\Domain\Model\ProvideLink $provide
      */
     public function addProvideLink(ProvideLink $provide)
     {
@@ -740,7 +740,7 @@ class Version
     /**
      * Add recommend
      *
-     * @param Packagist\WebBundle\Entity\RecommendLink $recommend
+     * @param TYPO3\Repository\Domain\Model\RecommendLink $recommend
      */
     public function addRecommendLink(RecommendLink $recommend)
     {
@@ -760,7 +760,7 @@ class Version
     /**
      * Add suggest
      *
-     * @param Packagist\WebBundle\Entity\SuggestLink $suggest
+     * @param TYPO3\Repository\Domain\Model\SuggestLink $suggest
      */
     public function addSuggestLink(SuggestLink $suggest)
     {

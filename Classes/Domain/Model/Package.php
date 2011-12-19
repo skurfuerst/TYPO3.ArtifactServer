@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Packagist\WebBundle\Entity;
+namespace TYPO3\Repository\Domain\Model;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -20,7 +20,7 @@ use Composer\Repository\VcsRepository;
 use Composer\Repository\RepositoryManager;
 
 /**
- * @ORM\Entity(repositoryClass="Packagist\WebBundle\Entity\PackageRepository")
+ * @ORM\Entity(repositoryClass="TYPO3\Repository\Domain\Model\PackageRepository")
  * @ORM\Table(
  *     name="package",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="name_idx", columns={"name"})}
@@ -55,7 +55,7 @@ class Package
     private $description;
 
     /**
-     * @ORM\OneToMany(targetEntity="Packagist\WebBundle\Entity\Version", mappedBy="package")
+     * @ORM\OneToMany(targetEntity="TYPO3\Repository\Domain\Model\Version", mappedBy="package")
      */
     private $versions;
 
@@ -295,7 +295,7 @@ class Package
     /**
      * Add versions
      *
-     * @param Packagist\WebBundle\Entity\Version $versions
+     * @param TYPO3\Repository\Domain\Model\Version $versions
      */
     public function addVersions(Version $versions)
     {
@@ -375,7 +375,7 @@ class Package
     /**
      * Add maintainers
      *
-     * @param Packagist\WebBundle\Entity\User $maintainer
+     * @param TYPO3\Repository\Domain\Model\User $maintainer
      */
     public function addMaintainer(User $maintainer)
     {
