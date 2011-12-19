@@ -1,0 +1,18 @@
+SandstormMedia:
+  Semantic:
+    prefixes:
+      t3package: http://typo3.org/ns/2011/Package#
+    PropertyMapping:
+      TYPO3\ArtifactServer\Domain\Model\Package:
+        type: t3package:Package
+        identityProvider: 'SandstormMedia\Semantic\Core\RdfGeneration\IdentityProvider\PlaceholderIdentityProvider'
+        uriPattern: 'http://packages.typo3.org/package/{identifier}'
+        properties:
+          name:
+            type: t3package:name
+          type:
+            type: t3package:type
+          description:
+            type: t3package:description
+          versions:
+            type: t3package:versions
