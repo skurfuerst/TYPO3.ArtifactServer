@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace TYPO3\Repository\Domain\Model;
+namespace TYPO3\ArtifactServer\Domain\Model;
 
 use TYPO3\FLOW3\Annotations as FLOW3;
 use Doctrine\ORM\Mapping as ORM;
@@ -25,12 +25,12 @@ class Tag
     /**
      * @ORM\Column
      */
-    private $name;
+    protected $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="TYPO3\Repository\Domain\Model\Version", mappedBy="tags")
+     * @ORM\ManyToMany(targetEntity="TYPO3\ArtifactServer\Domain\Model\Version", mappedBy="tags")
      */
-    private $versions;
+    protected $versions;
 
     public function __construct($name = null)
     {
@@ -77,9 +77,9 @@ class Tag
     /**
      * Add versions
      *
-     * @param TYPO3\Repository\Domain\Model\Version $versions
+     * @param TYPO3\ArtifactServer\Domain\Model\Version $versions
      */
-    public function addVersions(\TYPO3\Repository\Domain\Model\Version $versions)
+    public function addVersions(\TYPO3\ArtifactServer\Domain\Model\Version $versions)
     {
         $this->versions[] = $versions;
     }

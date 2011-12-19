@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace TYPO3\Repository\Domain\Model;
+namespace TYPO3\ArtifactServer\Domain\Model;
 
 use TYPO3\FLOW3\Annotations as FLOW3;
 use Doctrine\ORM\Mapping as ORM;
@@ -26,12 +26,12 @@ abstract class AbstractPackageLink
     /**
      * @ORM\Column()
      */
-    private $packageName;
+    protected $packageName;
 
     /**
      * @ORM\Column()
      */
-    private $packageVersion;
+    protected $packageVersion;
 
     public function toArray()
     {
@@ -91,9 +91,9 @@ abstract class AbstractPackageLink
     /**
      * Set version
      *
-     * @param TYPO3\Repository\Domain\Model\Version $version
+     * @param TYPO3\ArtifactServer\Domain\Model\Version $version
      */
-    public function setVersion(\TYPO3\Repository\Domain\Model\Version $version)
+    public function setVersion(\TYPO3\ArtifactServer\Domain\Model\Version $version)
     {
         $this->version = $version;
     }
@@ -101,7 +101,7 @@ abstract class AbstractPackageLink
     /**
      * Get version
      *
-     * @return TYPO3\Repository\Domain\Model\Version
+     * @return TYPO3\ArtifactServer\Domain\Model\Version
      */
     public function getVersion()
     {

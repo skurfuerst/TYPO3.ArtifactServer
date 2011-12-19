@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace TYPO3\Repository\Domain\Model;
+namespace TYPO3\ArtifactServer\Domain\Model;
 
 use TYPO3\FLOW3\Annotations as FLOW3;
 use Doctrine\ORM\Mapping as ORM;
@@ -23,138 +23,149 @@ class Version
 {
 
     /**
-     * @ORM\Column
+     * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+	 * @var string
      */
-    private $description;
+    protected $description;
 
     /**
-     * @ORM\Column(nullable=true)
+     * @var string
      */
-    private $type;
+    protected $type;
 
     /**
-     * @ORM\Column(nullable=true)
+     * @var string
      */
-    private $targetDir;
+    protected $targetDir;
 
     /**
-     * @ORM\Column(type="array", nullable=true)
+     * @var array
      */
-    private $extra = array();
+    protected $extra = array();
 
     /**
-     * @ORM\ManyToMany(targetEntity="TYPO3\Repository\Domain\Model\Tag", inversedBy="versions")
+	 * @var \Doctrine\Common\Collections\Collection<TYPO3\ArtifactServer\Domain\Model\Tag>
+     * @ORM\ManyToMany(inversedBy="versions")
      */
-    private $tags;
+    protected $tags;
 
     /**
-     * @ORM\ManyToOne(targetEntity="TYPO3\Repository\Domain\Model\Package", fetch="EAGER", inversedBy="versions")
+	 * @var TYPO3\ArtifactServer\Domain\Model\Package
+     * @ORM\ManyToOne(inversedBy="versions")
      */
-    private $package;
+    protected $package;
 
     /**
-     * @ORM\Column(nullable=true)
+     * @var string
      */
-    private $homepage;
+    protected $homepage;
 
     /**
-     * @ORM\Column
+     * @var string
      */
-    private $version;
+    protected $version;
 
     /**
-     * @ORM\Column
+     * @var string
      */
-    private $normalizedVersion;
+    protected $normalizedVersion;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @var boolean
      */
-    private $development;
+    protected $development;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="text")
+	 * @var string
      */
-    private $license;
+    protected $license;
 
     /**
-     * @ORM\ManyToMany(targetEntity="TYPO3\Repository\Domain\Model\Author", inversedBy="versions")
-     * @ORM\JoinTable(name="version_author",
-     *     joinColumns={@ORM\JoinColumn(name="version_id", referencedColumnName="id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="author_id", referencedColumnName="id")}
-     * )
+     * @ORM\ManyToMany(inversedBy="versions")
+	 * @var \Doctrine\Common\Collections\Collection<\TYPO3\ArtifactServer\Domain\Model\Author>
      */
-    private $authors;
+    protected $authors;
 
     /**
-     * @ORM\OneToMany(targetEntity="TYPO3\Repository\Domain\Model\RequireLink", mappedBy="version")
+     * @ORM\OneToMany(mappedBy="version")
+	 * @var \Doctrine\Common\Collections\Collection<\TYPO3\ArtifactServer\Domain\Model\RequireLink>
      */
-    private $require;
+    protected $require;
 
     /**
-     * @ORM\OneToMany(targetEntity="TYPO3\Repository\Domain\Model\ReplaceLink", mappedBy="version")
+     * @ORM\OneToMany(mappedBy="version")
+	 * @var \Doctrine\Common\Collections\Collection<\TYPO3\ArtifactServer\Domain\Model\ReplaceLink>
      */
-    private $replace;
+    protected $replace;
 
     /**
-     * @ORM\OneToMany(targetEntity="TYPO3\Repository\Domain\Model\ConflictLink", mappedBy="version")
+     * @ORM\OneToMany(mappedBy="version")
+	 * @var \Doctrine\Common\Collections\Collection<\TYPO3\ArtifactServer\Domain\Model\ConflictLink>
      */
-    private $conflict;
+    protected $conflict;
 
     /**
-     * @ORM\OneToMany(targetEntity="TYPO3\Repository\Domain\Model\ProvideLink", mappedBy="version")
+     * @ORM\OneToMany(mappedBy="version")
+	 * @var \Doctrine\Common\Collections\Collection<\TYPO3\ArtifactServer\Domain\Model\ProvideLink>
      */
-    private $provide;
+    protected $provide;
 
     /**
-     * @ORM\OneToMany(targetEntity="TYPO3\Repository\Domain\Model\RecommendLink", mappedBy="version")
+     * @ORM\OneToMany(mappedBy="version")
+	 * @var \Doctrine\Common\Collections\Collection<\TYPO3\ArtifactServer\Domain\Model\RecommendLink>
      */
-    private $recommend;
+    protected $recommend;
 
     /**
-     * @ORM\OneToMany(targetEntity="TYPO3\Repository\Domain\Model\SuggestLink", mappedBy="version")
+     * @ORM\OneToMany(mappedBy="version")
+	 * @var \Doctrine\Common\Collections\Collection<\TYPO3\ArtifactServer\Domain\Model\SuggestLink>
      */
-    private $suggest;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $source;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $dist;
+    protected $suggest;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+	 * @var string
      */
-    private $autoload;
+    protected $source;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+	 * @var string
      */
-    private $binaries;
+    protected $dist;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="text", nullable=true)
+	 * @var string
      */
-    private $createdAt;
+    protected $autoload;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="text", nullable=true)
+	 * @var string
      */
-    private $updatedAt;
+    protected $binaries;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @var \DateTime
      */
-    private $releasedAt;
+    protected $createdAt;
+
+    /**
+     * @var \DateTime
+     */
+    protected $updatedAt;
+
+    /**
+     * @var \DateTime
+     */
+    protected $releasedAt;
 
     public function __construct()
     {
@@ -342,8 +353,9 @@ class Version
      *
      * @param string $license
      */
-    public function setLicense(array $license)
+    public function setLicense($license)
     {
+		if (!is_array($license)) $license = array();
         $this->license = json_encode($license);
     }
 
@@ -480,7 +492,7 @@ class Version
     /**
      * Set package
      *
-     * @param TYPO3\Repository\Domain\Model\Package $package
+     * @param TYPO3\ArtifactServer\Domain\Model\Package $package
      */
     public function setPackage(Package $package)
     {
@@ -490,7 +502,7 @@ class Version
     /**
      * Get package
      *
-     * @return TYPO3\Repository\Domain\Model\Package $package
+     * @return TYPO3\ArtifactServer\Domain\Model\Package $package
      */
     public function getPackage()
     {
@@ -620,9 +632,9 @@ class Version
     /**
      * Add tags
      *
-     * @param TYPO3\Repository\Domain\Model\Tag $tags
+     * @param TYPO3\ArtifactServer\Domain\Model\Tag $tags
      */
-    public function addTag(\TYPO3\Repository\Domain\Model\Tag $tags)
+    public function addTag(\TYPO3\ArtifactServer\Domain\Model\Tag $tags)
     {
         $this->tags[] = $tags;
     }
@@ -630,9 +642,9 @@ class Version
     /**
      * Add authors
      *
-     * @param TYPO3\Repository\Domain\Model\Author $authors
+     * @param TYPO3\ArtifactServer\Domain\Model\Author $authors
      */
-    public function addAuthor(\TYPO3\Repository\Domain\Model\Author $authors)
+    public function addAuthor(\TYPO3\ArtifactServer\Domain\Model\Author $authors)
     {
         $this->authors[] = $authors;
     }
@@ -640,7 +652,7 @@ class Version
     /**
      * Add require
      *
-     * @param TYPO3\Repository\Domain\Model\RequireLink $require
+     * @param TYPO3\ArtifactServer\Domain\Model\RequireLink $require
      */
     public function addRequireLink(RequireLink $require)
     {
@@ -660,7 +672,7 @@ class Version
     /**
      * Add replace
      *
-     * @param TYPO3\Repository\Domain\Model\ReplaceLink $replace
+     * @param TYPO3\ArtifactServer\Domain\Model\ReplaceLink $replace
      */
     public function addReplaceLink(ReplaceLink $replace)
     {
@@ -680,7 +692,7 @@ class Version
     /**
      * Add conflict
      *
-     * @param TYPO3\Repository\Domain\Model\ConflictLink $conflict
+     * @param TYPO3\ArtifactServer\Domain\Model\ConflictLink $conflict
      */
     public function addConflictLink(ConflictLink $conflict)
     {
@@ -700,7 +712,7 @@ class Version
     /**
      * Add provide
      *
-     * @param TYPO3\Repository\Domain\Model\ProvideLink $provide
+     * @param TYPO3\ArtifactServer\Domain\Model\ProvideLink $provide
      */
     public function addProvideLink(ProvideLink $provide)
     {
@@ -720,7 +732,7 @@ class Version
     /**
      * Add recommend
      *
-     * @param TYPO3\Repository\Domain\Model\RecommendLink $recommend
+     * @param TYPO3\ArtifactServer\Domain\Model\RecommendLink $recommend
      */
     public function addRecommendLink(RecommendLink $recommend)
     {
@@ -740,7 +752,7 @@ class Version
     /**
      * Add suggest
      *
-     * @param TYPO3\Repository\Domain\Model\SuggestLink $suggest
+     * @param TYPO3\ArtifactServer\Domain\Model\SuggestLink $suggest
      */
     public function addSuggestLink(SuggestLink $suggest)
     {

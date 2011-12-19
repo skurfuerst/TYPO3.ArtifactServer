@@ -10,16 +10,16 @@
  * file that was distributed with this source code.
  */
 
-namespace TYPO3\Repository\Domain\Repository;
+namespace TYPO3\ArtifactServer\Domain\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
 /**
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
-class VersionRepository extends EntityRepository
+class VersionRepository extends \TYPO3\FLOW3\Persistence\Doctrine\Repository
 {
-    protected $supportedLinkTypes = array(
+/*    protected $supportedLinkTypes = array(
         'require',
         'conflict',
         'provide',
@@ -51,5 +51,5 @@ class VersionRepository extends EntityRepository
         }
 
         $em->remove($version);
-    }
+    }*/
 }

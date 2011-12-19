@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace TYPO3\Repository\Domain\Model;
+namespace TYPO3\ArtifactServer\Domain\Model;
 
 use TYPO3\FLOW3\Annotations as FLOW3;
 use Doctrine\ORM\Mapping as ORM;
@@ -25,17 +25,17 @@ class User
     /**
      * @ORM\ManyToMany(targetEntity="Package", mappedBy="maintainers")
      */
-    private $packages;
+    protected $packages;
 
     /**
-     * @ORM\OneToMany(targetEntity="TYPO3\Repository\Domain\Model\Author", mappedBy="owner")
+     * @ORM\OneToMany(targetEntity="TYPO3\ArtifactServer\Domain\Model\Author", mappedBy="owner")
      */
-    private $authors;
+    protected $authors;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $createdAt;
+    protected $createdAt;
 
     public function __construct()
     {
@@ -56,7 +56,7 @@ class User
     /**
      * Add packages
      *
-     * @param TYPO3\Repository\Domain\Model\Package $packages
+     * @param TYPO3\ArtifactServer\Domain\Model\Package $packages
      */
     public function addPackages(Package $packages)
     {
@@ -76,9 +76,9 @@ class User
     /**
      * Add authors
      *
-     * @param TYPO3\Repository\Domain\Model\Author $authors
+     * @param TYPO3\ArtifactServer\Domain\Model\Author $authors
      */
-    public function addAuthors(\TYPO3\Repository\Domain\Model\Author $authors)
+    public function addAuthors(\TYPO3\ArtifactServer\Domain\Model\Author $authors)
     {
         $this->authors[] = $authors;
     }

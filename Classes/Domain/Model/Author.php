@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace TYPO3\Repository\Domain\Model;
+namespace TYPO3\ArtifactServer\Domain\Model;
 
 use TYPO3\FLOW3\Annotations as FLOW3;
 use Doctrine\ORM\Mapping as ORM;
@@ -22,46 +22,50 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Author
 {
-    
+
     /**
      * Unique package name
      *
      * @ORM\Column(type="text", nullable=true)
      */
-    private $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $email;
+    protected $email;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $homepage;
+    protected $homepage;
 
     /**
-	 * @var \Doctrine\Common\Collections\Collection<\TYPO3\Repository\Domain\Model\Version>
+	 * var Doctrine\Common\Collections\Collection<\TYPO3\ArtifactServer\Domain\Model\Version>
+	 *
+	 *
      * @ORM\ManyToMany(mappedBy="authors")
      */
-    private $versions;
+    protected $versions;
 
     /**
-	 * @var \Doctrine\Common\Collections\Collection<\TYPO3\Repository\Domain\Model\User>
+	 * var Doctrine\Common\Collections\Collection<\TYPO3\ArtifactServer\Domain\Model\User>
+	 *
+	 * 
      * @ORM\ManyToOne(inversedBy="authors")
      */
-    private $owner;
+    protected $owner;
 
     /**
 	 * @var \DateTime
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
 	 * @var \DateTime
      * @ORM\Column(nullable=true)
      */
-    private $updatedAt;
+    protected $updatedAt;
 
     public function __construct()
     {
@@ -131,7 +135,7 @@ class Author
     /**
      * Add versions
      *
-     * @param TYPO3\Repository\Domain\Model\Version $version
+     * @param TYPO3\ArtifactServer\Domain\Model\Version $version
      */
     public function addVersion(Version $version)
     {
@@ -211,7 +215,7 @@ class Author
     /**
      * Set owner
      *
-     * @param TYPO3\Repository\Domain\Model\User $owner
+     * @param TYPO3\ArtifactServer\Domain\Model\User $owner
      */
     public function setOwner(User $owner)
     {
@@ -221,7 +225,7 @@ class Author
     /**
      * Get owner
      *
-     * @return TYPO3\Repository\Domain\Model\User
+     * @return TYPO3\ArtifactServer\Domain\Model\User
      */
     public function getOwner()
     {

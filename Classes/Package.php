@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\Repository;
+namespace TYPO3\ArtifactServer;
 
 use \TYPO3\FLOW3\Package\Package as BasePackage;
 use TYPO3\FLOW3\Annotations as FLOW3;

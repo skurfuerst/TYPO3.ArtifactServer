@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace TYPO3\Repository\Domain\Model;
+namespace TYPO3\ArtifactServer\Domain\Model;
 
 use TYPO3\FLOW3\Annotations as FLOW3;
 use Doctrine\ORM\Mapping as ORM;
@@ -23,7 +23,7 @@ use Doctrine\ORM\Mapping as ORM;
 class ConflictLink extends AbstractPackageLink
 {
     /**
-	 * @var \TYPO3\Repository\Domain\Model\Version
+	 * @var \TYPO3\ArtifactServer\Domain\Model\Version
      * @ORM\ManyToOne(inversedBy="conflict")
      */
     protected $version;

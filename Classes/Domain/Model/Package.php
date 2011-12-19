@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace TYPO3\Repository\Domain\Model;
+namespace TYPO3\ArtifactServer\Domain\Model;
 
 use TYPO3\FLOW3\Annotations as FLOW3;
 use Doctrine\ORM\Mapping as ORM;
@@ -24,63 +24,64 @@ use Composer\Repository\RepositoryManager;
  */
 class Package
 {
- 
+
     /**
      * Unique package name
      *
-     * @ORM\Column()
+	 * @var string
      */
-    private $name;
+    protected $name;
 
     /**
-     * @ORM\Column(nullable=true)
+	 * @var string
      */
-    private $type;
+    protected $type;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+	 * @var string
      */
-    private $description;
+    protected $description;
 
     /**
-     * @ORM\OneToMany(targetEntity="TYPO3\Repository\Domain\Model\Version", mappedBy="package")
+     * @ORM\OneToMany(mappedBy="package")
+	 * @var Doctrine\Common\Collections\Collection<TYPO3\ArtifactServer\Domain\Model\Version>
      */
-    private $versions;
+    protected $versions;
 
     /**
-     * @ORM\ManyToMany(targetEntity="User", inversedBy="packages")
-     * @ORM\JoinTable(name="maintainers_packages")
+     * @ORM\ManyToMany(inversedBy="packages")
+	 * @var \Doctrine\Common\Collections\Collection<TYPO3\ArtifactServer\Domain\Model\User>
      */
-    private $maintainers;
+    protected $maintainers;
 
     /**
-     * @ORM\Column()
+     * @var string
      */
-    private $repository;
+    protected $repository;
 
     // dist-tags / rel or runtime?
 
     /**
-     * @ORM\Column(type="datetime")
+     * @var \DateTime
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @var \DateTime
      */
-    private $updatedAt;
+    protected $updatedAt;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @var \DateTime
      */
-    private $crawledAt;
+    protected $crawledAt;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @var \DateTime
      */
-    private $indexedAt;
+    protected $indexedAt;
 
-    private $entityRepository;
 
     public function __construct()
     {
@@ -282,7 +283,7 @@ class Package
     /**
      * Add versions
      *
-     * @param TYPO3\Repository\Domain\Model\Version $versions
+     * @param TYPO3\ArtifactServer\Domain\Model\Version $versions
      */
     public function addVersions(Version $versions)
     {
@@ -362,7 +363,7 @@ class Package
     /**
      * Add maintainers
      *
-     * @param TYPO3\Repository\Domain\Model\User $maintainer
+     * @param TYPO3\ArtifactServer\Domain\Model\User $maintainer
      */
     public function addMaintainer(User $maintainer)
     {

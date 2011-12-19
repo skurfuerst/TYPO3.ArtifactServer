@@ -10,20 +10,21 @@
  * file that was distributed with this source code.
  */
 
-namespace TYPO3\Repository\Domain\Repository;
+namespace TYPO3\ArtifactServer\Domain\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
 /**
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
-class PackageRepository extends EntityRepository
+class PackageRepository extends \TYPO3\FLOW3\Persistence\Doctrine\Repository
 {
-    public function getStalePackages()
+	protected static $ENTITY_CLASSNAME = '\TYPO3\ArtifactServer\Domain\Model\Package';
+    /*public function getStalePackages()
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('p, v')
-            ->from('TYPO3\Repository\Domain\Model\Package', 'p')
+            ->from('TYPO3\ArtifactServer\Domain\Model\Package', 'p')
             ->leftJoin('p.versions', 'v')
             ->where('p.crawledAt IS NULL OR p.crawledAt < ?0')
             ->setParameters(array(new \DateTime('-1hour')));
@@ -34,7 +35,7 @@ class PackageRepository extends EntityRepository
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('p, v, t')
-            ->from('TYPO3\Repository\Domain\Model\Package', 'p')
+            ->from('TYPO3\ArtifactServer\Domain\Model\Package', 'p')
             ->leftJoin('p.versions', 'v')
             ->leftJoin('v.tags', 't')
             ->where('p.indexedAt IS NULL OR p.indexedAt < ?0')
@@ -73,12 +74,12 @@ class PackageRepository extends EntityRepository
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('p, v, t, m')
-            ->from('TYPO3\Repository\Domain\Model\Package', 'p')
+            ->from('TYPO3\ArtifactServer\Domain\Model\Package', 'p')
             ->leftJoin('p.versions', 'v')
             ->leftJoin('p.maintainers', 'm')
             ->leftJoin('v.tags', 't')
             ->orderBy('v.development', 'DESC')
             ->addOrderBy('v.releasedAt', 'DESC');
         return $qb;
-    }
+    }*/
 }
