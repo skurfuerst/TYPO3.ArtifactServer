@@ -12,21 +12,16 @@
 
 namespace TYPO3\Repository\Domain\Model;
 
+use TYPO3\FLOW3\Annotations as FLOW3;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\MappedSuperclass()
+ * @FLOW3\Entity
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
-abstract class PackageLink
+abstract class AbstractPackageLink
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
 
     /**
      * @ORM\Column()

@@ -12,21 +12,17 @@
 
 namespace TYPO3\Repository\Domain\Model;
 
+use TYPO3\FLOW3\Annotations as FLOW3;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @author Jordi Boggiano <j.boggiano@seld.be>
+ * @FLOW3\Entity
  */
 class Author
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
+    
     /**
      * Unique package name
      *
@@ -45,22 +41,25 @@ class Author
     private $homepage;
 
     /**
-     * @ORM\ManyToMany(targetEntity="TYPO3\Repository\Domain\Model\Version", mappedBy="authors")
+	 * @var \Doctrine\Common\Collections\Collection<\TYPO3\Repository\Domain\Model\Version>
+     * @ORM\ManyToMany(mappedBy="authors")
      */
     private $versions;
 
     /**
-     * @ORM\ManyToOne(targetEntity="TYPO3\Repository\Domain\Model\User", inversedBy="authors")
+	 * @var \Doctrine\Common\Collections\Collection<\TYPO3\Repository\Domain\Model\User>
+     * @ORM\ManyToOne(inversedBy="authors")
      */
     private $owner;
 
     /**
-     * @ORM\Column(type="datetime")
+	 * @var \DateTime
      */
     private $createdAt;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+	 * @var \DateTime
+     * @ORM\Column(nullable=true)
      */
     private $updatedAt;
 

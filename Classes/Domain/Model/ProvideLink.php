@@ -12,15 +12,14 @@
 
 namespace TYPO3\Repository\Domain\Model;
 
+use TYPO3\FLOW3\Annotations as FLOW3;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
- * @ORM\Table(name="link_provide")
+ * @FLOW3\Entity
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
-class ProvideLink extends PackageLink
+class ProvideLink extends AbstractPackageLink
 {
     /**
      * @ORM\ManyToOne(targetEntity="TYPO3\Repository\Domain\Model\Version", inversedBy="provide")

@@ -12,29 +12,18 @@
 
 namespace TYPO3\Repository\Domain\Model;
 
+use TYPO3\FLOW3\Annotations as FLOW3;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="TYPO3\Repository\Domain\Model\VersionRepository")
- * @ORM\Table(
- *     name="package_version",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="pkg_ver_idx",columns={"package_id","normalizedVersion"})}
- * )
+ * @FLOW3\Entity
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
 class Version
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
 
     /**
      * @ORM\Column
-     * @Assert\NotBlank()
      */
     private $name;
 
@@ -60,40 +49,31 @@ class Version
 
     /**
      * @ORM\ManyToMany(targetEntity="TYPO3\Repository\Domain\Model\Tag", inversedBy="versions")
-     * @ORM\JoinTable(name="version_tag",
-     *     joinColumns={@ORM\JoinColumn(name="version_id", referencedColumnName="id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id")}
-     * )
      */
     private $tags;
 
     /**
      * @ORM\ManyToOne(targetEntity="TYPO3\Repository\Domain\Model\Package", fetch="EAGER", inversedBy="versions")
-     * @Assert\Type(type="TYPO3\Repository\Domain\Model\Package")
      */
     private $package;
 
     /**
      * @ORM\Column(nullable=true)
-     * @Assert\Url()
      */
     private $homepage;
 
     /**
      * @ORM\Column
-     * @Assert\NotBlank()
      */
     private $version;
 
     /**
      * @ORM\Column
-     * @Assert\NotBlank()
      */
     private $normalizedVersion;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Assert\NotBlank()
      */
     private $development;
 

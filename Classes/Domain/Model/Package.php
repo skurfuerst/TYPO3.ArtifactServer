@@ -12,31 +12,19 @@
 
 namespace TYPO3\Repository\Domain\Model;
 
+use TYPO3\FLOW3\Annotations as FLOW3;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\ExecutionContext;
 use Doctrine\Common\Collections\ArrayCollection;
 use Composer\Repository\VcsRepository;
 use Composer\Repository\RepositoryManager;
 
 /**
- * @ORM\Entity(repositoryClass="TYPO3\Repository\Domain\Model\PackageRepository")
- * @ORM\Table(
- *     name="package",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="name_idx", columns={"name"})}
- * )
- * @Assert\Callback(methods={"isPackageUnique","isRepositoryValid"})
+ * @FLOW3\Entity
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
 class Package
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
+ 
     /**
      * Unique package name
      *
@@ -67,7 +55,6 @@ class Package
 
     /**
      * @ORM\Column()
-     * @Assert\NotBlank()
      */
     private $repository;
 

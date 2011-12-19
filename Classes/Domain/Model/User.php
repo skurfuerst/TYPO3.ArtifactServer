@@ -12,23 +12,16 @@
 
 namespace TYPO3\Repository\Domain\Model;
 
-use FOS\UserBundle\Entity\User as BaseUser;
+use TYPO3\FLOW3\Annotations as FLOW3;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @ORM\Entity
- * @ORM\Table(name="fos_user")
+ * @FLOW3\Entity
  */
-class User extends BaseUser
+class User
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\generatedValue(strategy="AUTO")
-     */
-    protected $id;
-
+    
     /**
      * @ORM\ManyToMany(targetEntity="Package", mappedBy="maintainers")
      */
