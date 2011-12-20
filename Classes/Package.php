@@ -10,6 +10,8 @@ use TYPO3\FLOW3\Annotations as FLOW3;
  * @FLOW3\Scope("singleton")
  */
 class Package extends BasePackage {
-
+	public function boot(\TYPO3\FLOW3\Core\Bootstrap $bootstrap) {
+		include_once($this->getResourcesPath() . '/Private/PHP/Pheanstalk/pheanstalk_init.php');
+	}
 }
 ?>

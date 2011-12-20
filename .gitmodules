@@ -1,0 +1,3 @@
+[submodule "Resources/Private/PHP/Pheanstalk"]
+	path = Resources/Private/PHP/Pheanstalk
+	url = https://github.com/pda/pheanstalk.git
