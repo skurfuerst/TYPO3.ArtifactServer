@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Packagist.
  *
@@ -19,10 +18,11 @@ use Doctrine\ORM\Mapping as ORM;
  * @FLOW3\Entity
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
-class ProvideLink extends AbstractPackageLink
-{
-    /**
-     * @ORM\ManyToOne(targetEntity="TYPO3\ArtifactServer\Domain\Model\Version", inversedBy="provide")
-     */
-    protected $version;
+class ProvideLink extends AbstractPackageLink {
+
+	/**
+	 * @ORM\ManyToOne(targetEntity="TYPO3\ArtifactServer\Domain\Model\Version", inversedBy="provide")
+	 */
+	protected $version;
+
 }

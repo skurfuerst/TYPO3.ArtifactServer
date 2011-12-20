@@ -20,11 +20,12 @@ use Doctrine\ORM\Mapping as ORM;
  * @FLOW3\Entity
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
-class ConflictLink extends AbstractPackageLink
-{
-    /**
+class ConflictLink extends AbstractPackageLink {
+
+	/**
 	 * @var \TYPO3\ArtifactServer\Domain\Model\Version
-     * @ORM\ManyToOne(inversedBy="conflict")
-     */
-    protected $version;
+	 * @ORM\ManyToOne(inversedBy="conflict")
+	 */
+	protected $version;
+
 }

@@ -20,10 +20,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @FLOW3\Entity
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
-class RequireLink extends AbstractPackageLink
-{
-    /**
-     * @ORM\ManyToOne(targetEntity="TYPO3\ArtifactServer\Domain\Model\Version", inversedBy="require")
-     */
-    protected $version;
+class RequireLink extends AbstractPackageLink {
+
+	/**
+	 * @var \TYPO3\ArtifactServer\Domain\Model\Version
+	 * @ORM\ManyToOne(inversedBy="require")
+	 */
+	protected $version;
+
 }

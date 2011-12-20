@@ -20,215 +20,172 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @author Jordi Boggiano <j.boggiano@seld.be>
  * @FLOW3\Entity
  */
-class Author
-{
+class Author {
 
-    /**
-     * Unique package name
-     *
-     * @ORM\Column(type="text", nullable=true)
-     */
-    protected $name;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    protected $email;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    protected $homepage;
-
-    /**
-	 * var Doctrine\Common\Collections\Collection<\TYPO3\ArtifactServer\Domain\Model\Version>
+	/**
+	 * Name of author
 	 *
-	 *
-     * @ORM\ManyToMany(mappedBy="authors")
-     */
-    protected $versions;
+	 * @ORM\Column(nullable=true)
+	 * @var string
+	 */
+	protected $name;
 
-    /**
-	 * var Doctrine\Common\Collections\Collection<\TYPO3\ArtifactServer\Domain\Model\User>
-	 *
-	 * 
-     * @ORM\ManyToOne(inversedBy="authors")
-     */
-    protected $owner;
+	/**
+	 * @ORM\Column(nullable=true)
+	 * @var string
+	 */
+	protected $email;
 
-    /**
+	/**
+	 * @ORM\Column(nullable=true)
+	 * @var string
+	 */
+	protected $homepage;
+
+	/**
+	 * @var Doctrine\Common\Collections\Collection<\TYPO3\ArtifactServer\Domain\Model\Version>
+	 * @ORM\ManyToMany(mappedBy="authors")
+	 */
+	protected $versions;
+
+	/**
 	 * @var \DateTime
-     */
-    protected $createdAt;
+	 */
+	protected $createdAt;
 
-    /**
+	/**
 	 * @var \DateTime
-     * @ORM\Column(nullable=true)
-     */
-    protected $updatedAt;
+	 * @ORM\Column(nullable=true)
+	 */
+	protected $updatedAt;
 
-    public function __construct()
-    {
-        $this->versions = new ArrayCollection();
-        $this->createdAt = new \DateTime;
-    }
+	public function __construct() {
+		$this->versions = new ArrayCollection();
+		$this->createdAt = new \DateTime;
+	}
 
-    public function toArray()
-    {
-        return array(
-            'name' => $this->getName(),
-            'email' => $this->getEmail(),
-            'homepage' => $this->getHomepage(),
-        );
-    }
+	public function toArray() {
+		return array(
+			'name' => $this->getName(),
+			'email' => $this->getEmail(),
+			'homepage' => $this->getHomepage(),
+		);
+	}
 
-    /**
-     * Get id
-     *
-     * @return string $id
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+	/**
+	 * Get id
+	 *
+	 * @return string $id
+	 */
+	public function getId() {
+		return $this->id;
+	}
 
-    /**
-     * Set name
-     *
-     * @param string $name
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
+	/**
+	 * Set name
+	 *
+	 * @param string $name
+	 */
+	public function setName($name) {
+		$this->name = $name;
+	}
 
-    /**
-     * Get name
-     *
-     * @return string $name
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
+	/**
+	 * Get name
+	 *
+	 * @return string $name
+	 */
+	public function getName() {
+		return $this->name;
+	}
 
-    /**
-     * Set createdAt
-     *
-     * @param datetime $createdAt
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-    }
+	/**
+	 * Set createdAt
+	 *
+	 * @param datetime $createdAt
+	 */
+	public function setCreatedAt($createdAt) {
+		$this->createdAt = $createdAt;
+	}
 
-    /**
-     * Get createdAt
-     *
-     * @return datetime $createdAt
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
+	/**
+	 * Get createdAt
+	 *
+	 * @return datetime $createdAt
+	 */
+	public function getCreatedAt() {
+		return $this->createdAt;
+	}
 
-    /**
-     * Add versions
-     *
-     * @param TYPO3\ArtifactServer\Domain\Model\Version $version
-     */
-    public function addVersion(Version $version)
-    {
-        $this->versions[] = $version;
-    }
+	/**
+	 * Add versions
+	 *
+	 * @param TYPO3\ArtifactServer\Domain\Model\Version $version
+	 */
+	public function addVersion(Version $version) {
+		$this->versions[] = $version;
+	}
 
-    /**
-     * Get versions
-     *
-     * @return string $versions
-     */
-    public function getVersions()
-    {
-        return $this->versions;
-    }
+	/**
+	 * Get versions
+	 *
+	 * @return string $versions
+	 */
+	public function getVersions() {
+		return $this->versions;
+	}
 
-    /**
-     * Set updatedAt
-     *
-     * @param datetime $updatedAt
-     */
-    public function setUpdatedAt($updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
-    }
+	/**
+	 * Set updatedAt
+	 *
+	 * @param datetime $updatedAt
+	 */
+	public function setUpdatedAt($updatedAt) {
+		$this->updatedAt = $updatedAt;
+	}
 
-    /**
-     * Get updatedAt
-     *
-     * @return datetime $updatedAt
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
+	/**
+	 * Get updatedAt
+	 *
+	 * @return datetime $updatedAt
+	 */
+	public function getUpdatedAt() {
+		return $this->updatedAt;
+	}
 
-    /**
-     * Set email
-     *
-     * @param string $email
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-    }
+	/**
+	 * Set email
+	 *
+	 * @param string $email
+	 */
+	public function setEmail($email) {
+		$this->email = $email;
+	}
 
-    /**
-     * Get email
-     *
-     * @return text
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
+	/**
+	 * Get email
+	 *
+	 * @return text
+	 */
+	public function getEmail() {
+		return $this->email;
+	}
 
-    /**
-     * Set homepage
-     *
-     * @param string $homepage
-     */
-    public function setHomepage($homepage)
-    {
-        $this->homepage = $homepage;
-    }
+	/**
+	 * Set homepage
+	 *
+	 * @param string $homepage
+	 */
+	public function setHomepage($homepage) {
+		$this->homepage = $homepage;
+	}
 
-    /**
-     * Get homepage
-     *
-     * @return text
-     */
-    public function getHomepage()
-    {
-        return $this->homepage;
-    }
-
-    /**
-     * Set owner
-     *
-     * @param TYPO3\ArtifactServer\Domain\Model\User $owner
-     */
-    public function setOwner(User $owner)
-    {
-        $this->owner = $owner;
-    }
-
-    /**
-     * Get owner
-     *
-     * @return TYPO3\ArtifactServer\Domain\Model\User
-     */
-    public function getOwner()
-    {
-        return $this->owner;
-    }
+	/**
+	 * Get homepage
+	 *
+	 * @return text
+	 */
+	public function getHomepage() {
+		return $this->homepage;
+	}
 }

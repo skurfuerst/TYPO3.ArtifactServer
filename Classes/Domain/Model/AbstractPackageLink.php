@@ -20,96 +20,86 @@ use Doctrine\ORM\Mapping as ORM;
  * @FLOW3\Entity
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
-abstract class AbstractPackageLink
-{
+abstract class AbstractPackageLink {
 
-    /**
-     * @ORM\Column()
-     */
-    protected $packageName;
+	/**
+	 * @var string
+	 */
+	protected $packageName;
 
-    /**
-     * @ORM\Column()
-     */
-    protected $packageVersion;
+	/**
+	 * @var string
+	 */
+	protected $packageVersion;
 
-    public function toArray()
-    {
-        return array($this->getPackageName() => $this->getPackageVersion());
-    }
+	public function toArray() {
+		return array($this->getPackageName() => $this->getPackageVersion());
+	}
 
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
+	public function setId($id) {
+		$this->id = $id;
+	}
 
-    public function getId()
-    {
-        return $this->id;
-    }
+	public function getId() {
+		return $this->id;
+	}
 
-    /**
-     * Set packageName
-     *
-     * @param string $packageName
-     */
-    public function setPackageName($packageName)
-    {
-        $this->packageName = $packageName;
-    }
+	/**
+	 * Set packageName
+	 *
+	 * @param string $packageName
+	 */
+	public function setPackageName($packageName) {
+		$this->packageName = $packageName;
+	}
 
-    /**
-     * Get packageName
-     *
-     * @return string
-     */
-    public function getPackageName()
-    {
-        return $this->packageName;
-    }
+	/**
+	 * Get packageName
+	 *
+	 * @return string
+	 */
+	public function getPackageName() {
+		return $this->packageName;
+	}
 
-    /**
-     * Set packageVersion
-     *
-     * @param string $packageVersion
-     */
-    public function setPackageVersion($packageVersion)
-    {
-        $this->packageVersion = $packageVersion;
-    }
+	/**
+	 * Set packageVersion
+	 *
+	 * @param string $packageVersion
+	 */
+	public function setPackageVersion($packageVersion) {
+		$this->packageVersion = $packageVersion;
+	}
 
-    /**
-     * Get packageVersion
-     *
-     * @return string
-     */
-    public function getPackageVersion()
-    {
-        return $this->packageVersion;
-    }
+	/**
+	 * Get packageVersion
+	 *
+	 * @return string
+	 */
+	public function getPackageVersion() {
+		return $this->packageVersion;
+	}
 
-    /**
-     * Set version
-     *
-     * @param TYPO3\ArtifactServer\Domain\Model\Version $version
-     */
-    public function setVersion(\TYPO3\ArtifactServer\Domain\Model\Version $version)
-    {
-        $this->version = $version;
-    }
+	/**
+	 * Set version
+	 *
+	 * @param TYPO3\ArtifactServer\Domain\Model\Version $version
+	 */
+	public function setVersion(\TYPO3\ArtifactServer\Domain\Model\Version $version) {
+		$this->version = $version;
+	}
 
-    /**
-     * Get version
-     *
-     * @return TYPO3\ArtifactServer\Domain\Model\Version
-     */
-    public function getVersion()
-    {
-        return $this->version;
-    }
+	/**
+	 * Get version
+	 *
+	 * @return TYPO3\ArtifactServer\Domain\Model\Version
+	 */
+	public function getVersion() {
+		return $this->version;
+	}
 
-    public function __toString()
-    {
-        return $this->packageName.' '.$this->packageVersion;
-    }
+	public function __toString() {
+		return $this->packageName . ' ' . $this->packageVersion;
+	}
+
 }
