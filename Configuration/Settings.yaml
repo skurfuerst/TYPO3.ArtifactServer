@@ -6,7 +6,7 @@ SandstormMedia:
       TYPO3\ArtifactServer\Domain\Model\Package:
         type: t3package:Package
         identityProvider: 'SandstormMedia\Semantic\Core\RdfGeneration\IdentityProvider\PlaceholderIdentityProvider'
-        uriPattern: 'http://packages.typo3.org/package/{identifier}'
+        uriPattern: 'http://packages.typo3.org/package/{object.name}'
         properties:
           name:
             type: t3package:name
@@ -15,4 +15,22 @@ SandstormMedia:
           description:
             type: t3package:description
           versions:
-            type: t3package:versions
+            type: t3package:hasVersion
+          repository:
+            type: t3package:repository
+          createdAt:
+            type: t3package:createdAt
+          updatedAt:
+            type: t3package:updatedAt
+          crawledAt:
+            type: t3package:crawledAt
+
+      TYPO3\ArtifactServer\Domain\Model\Version:
+        type: t3package:Version
+        identityProvider: 'SandstormMedia\Semantic\Core\RdfGeneration\IdentityProvider\PlaceholderIdentityProvider'
+        uriPattern: 'http://packages.typo3.org/package/{object.package.name}/version/{object.version}'
+        properties:
+          updatedAt:
+            type: t3package:updatedAt
+          releasedAt:
+            type: t3package:releasedAt
