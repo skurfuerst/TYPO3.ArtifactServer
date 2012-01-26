@@ -73,6 +73,7 @@ class RepositoryCommandController extends \TYPO3\FLOW3\MVC\Controller\CommandCon
 	 */
 	public function importCommand() {
 		$packages = $this->packageRepository->findAll(); // TODO: only find the ones which have not been recently updated
+		/** @var $package \TYPO3\ArtifactServer\Domain\Model\Package */
 		foreach ($packages as $package) {
 			$this->outputLine('Importing <b>%s</b>', array($package->getRepository()));
 			$repository = new VcsRepository(array('url' => $package->getRepository()));
@@ -80,17 +81,18 @@ class RepositoryCommandController extends \TYPO3\FLOW3\MVC\Controller\CommandCon
 			$versionsFromRepository = $repository->getPackages();
 			$start = new \DateTime();
 
-			usort($versionsFromRepository, function ($a, $b) {
-						return version_compare($a->getVersion(), $b->getVersion());
-					});
+			usort($versionsFromRepository, function (\Composer\Package\PackageInterface $a, \Composer\Package\PackageInterface $b) {
+				return version_compare($a->getVersion(), $b->getVersion());
+			});
 
+			/** @var $versionFromRepository \Composer\Package\PackageInterface */
 			foreach ($versionsFromRepository as $versionFromRepository) {
 				$this->outputLine('Storing %s (%s)', array($versionFromRepository->getPrettyVersion(), $versionFromRepository->getVersion()));
-
 				$this->updateVersionInformation($package, $versionFromRepository);
 			}
 
 			// remove outdated -dev versions
+			/** @var $version \TYPO3\ArtifactServer\Domain\Model\Version */
 			foreach ($package->getVersions() as $version) {
 				if ($version->getDevelopment() && $version->getUpdatedAt() < $start) {
 					$this->outputLine('Deleting stale version: ' . $version->getVersion());
@@ -104,6 +106,11 @@ class RepositoryCommandController extends \TYPO3\FLOW3\MVC\Controller\CommandCon
 		}
 	}
 
+	/**
+	 * @param \TYPO3\ArtifactServer\Domain\Model\Package $package
+	 * @param \Composer\Package\PackageInterface $versionFromRepository
+	 * @return mixed
+	 */
 	protected function updateVersionInformation(\TYPO3\ArtifactServer\Domain\Model\Package $package, \Composer\Package\PackageInterface $versionFromRepository) {
 		$versionExists = FALSE;
 		$version = new \TYPO3\ArtifactServer\Domain\Model\Version();
@@ -111,6 +118,7 @@ class RepositoryCommandController extends \TYPO3\FLOW3\MVC\Controller\CommandCon
 		$version->setNormalizedVersion(preg_replace('{-dev$}i', '', $versionFromRepository->getVersion()));
 
 		// check if we have that version yet
+		/** @var $existingVersion \TYPO3\ArtifactServer\Domain\Model\Version */
 		foreach ($package->getVersions() as $existingVersion) {
 			if ($existingVersion->equals($version)) {
 				// avoid updating newer versions, in case two branches have the same version in their composer.json
@@ -150,7 +158,11 @@ class RepositoryCommandController extends \TYPO3\FLOW3\MVC\Controller\CommandCon
 		}
 	}
 
-	protected function setVersionProperties($version, $versionFromRepository) {
+	/**
+	 * @param \TYPO3\ArtifactServer\Domain\Model\Version $version
+	 * @param \Composer\Package\PackageInterface $versionFromRepository
+	 */
+	protected function setVersionProperties(\TYPO3\ArtifactServer\Domain\Model\Version $version, \Composer\Package\PackageInterface $versionFromRepository) {
 		$propertiesToMap = array(
 			'name' => 'name',
 			'prettyVersion' => 'version',
@@ -169,7 +181,12 @@ class RepositoryCommandController extends \TYPO3\FLOW3\MVC\Controller\CommandCon
 		}
 	}
 
-	protected function setSourceAndDistTypes($version, $versionFromRepository, $package) {
+	/**
+	 * @param \TYPO3\ArtifactServer\Domain\Model\Version $version
+	 * @param \Composer\Package\PackageInterface $versionFromRepository
+	 * @param \TYPO3\ArtifactServer\Domain\Model\Package $package
+	 */
+	protected function setSourceAndDistTypes(\TYPO3\ArtifactServer\Domain\Model\Version $version, \Composer\Package\PackageInterface $versionFromRepository, \TYPO3\ArtifactServer\Domain\Model\Package $package) {
 		if ($versionFromRepository->getSourceType()) {
 			$source['type'] = $versionFromRepository->getSourceType();
 			$source['url'] = $versionFromRepository->getSourceUrl();
@@ -193,7 +210,12 @@ class RepositoryCommandController extends \TYPO3\FLOW3\MVC\Controller\CommandCon
 		}
 	}
 
-	protected function setTags($version, $versionFromRepository) {
+	/**
+	 * @param \TYPO3\ArtifactServer\Domain\Model\Version $version
+	 * @param \Composer\Package\PackageInterface $versionFromRepository
+	 * @return void
+	 */
+	protected function setTags(\TYPO3\ArtifactServer\Domain\Model\Version $version, \Composer\Package\PackageInterface $versionFromRepository) {
 		$version->getTags()->clear();
 		if (!is_array($versionFromRepository->getKeywords())) return;
 
@@ -202,7 +224,12 @@ class RepositoryCommandController extends \TYPO3\FLOW3\MVC\Controller\CommandCon
 		}
 	}
 
-	protected function setAuthors($version, $versionFromRepository) {
+	/**
+	 * @param \TYPO3\ArtifactServer\Domain\Model\Version $version
+	 * @param \Composer\Package\PackageInterface $versionFromRepository
+	 * @return void
+	 */
+	protected function setAuthors(\TYPO3\ArtifactServer\Domain\Model\Version $version, \Composer\Package\PackageInterface $versionFromRepository) {
 		$version->getAuthors()->clear();
 		if (!is_array($versionFromRepository->getAuthors()))
 			return;
@@ -245,7 +272,11 @@ class RepositoryCommandController extends \TYPO3\FLOW3\MVC\Controller\CommandCon
 		}
 	}
 
-	protected function setLinksToOtherPackages($version, $versionFromRepository) {
+	/**
+	 * @param \TYPO3\ArtifactServer\Domain\Model\Version $version
+	 * @param \Composer\Package\PackageInterface $versionFromRepository
+	 */
+	protected function setLinksToOtherPackages(\TYPO3\ArtifactServer\Domain\Model\Version $version, \Composer\Package\PackageInterface $versionFromRepository) {
 		$supportedLinkTypes = array(
 			'require' => 'TYPO3\ArtifactServer\Domain\Model\RequireLink',
 			'conflict' => 'TYPO3\ArtifactServer\Domain\Model\ConflictLink',
@@ -257,10 +288,12 @@ class RepositoryCommandController extends \TYPO3\FLOW3\MVC\Controller\CommandCon
 
 		foreach ($supportedLinkTypes as $linkType => $linkEntityClassName) {
 			$links = array();
+			/** @var $link \Composer\Package\Link */
 			foreach (ObjectAccess::getProperty($versionFromRepository, $linkType . 's') as $link) {
 				$links[$link->getTarget()] = $link->getPrettyConstraint();
 			}
 
+			/** @var $link \TYPO3\ArtifactServer\Domain\Model\AbstractPackageLink */
 			foreach (ObjectAccess::getProperty($version, $linkType) as $link) {
 				// clear links that have changed/disappeared (for updates)
 				if (!isset($links[$link->getPackageName()]) || $links[$link->getPackageName()] !== $link->getPackageVersion()) {

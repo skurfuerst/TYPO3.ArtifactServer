@@ -75,24 +75,32 @@ class Package {
 	 */
 	protected $indexedAt;
 
+	/**
+	 *
+	 */
 	public function __construct() {
 		$this->versions = new ArrayCollection();
 		$this->createdAt = new \DateTime;
 	}
 
+	/**
+	 * @return array
+	 */
 	public function toArray() {
 		$versions = array();
+		/** @var $version Version */
 		foreach ($this->getVersions() as $version) {
 			$versions[$version->getVersion()] = $version->toArray();
 		}
-		$maintainers = array();
-		foreach ($this->getMaintainers() as $maintainer) {
-			$maintainers[] = $maintainer->toArray();
-		}
+		// TODO reenable it maintainers are defined
+//		$maintainers = array();
+//		foreach ($this->getMaintainers() as $maintainer) {
+//			$maintainers[] = $maintainer->toArray();
+//		}
 		$data = array(
 			'name' => $this->getName(),
 			'description' => $this->getDescription(),
-			'maintainers' => $maintainers,
+//			'maintainers' => $maintainers,
 			'versions' => $versions,
 			'type' => $this->getType(),
 			'repository' => $this->getRepository()
@@ -100,6 +108,10 @@ class Package {
 		return $data;
 	}
 
+	/**
+	 * @param ExecutionContext $context
+	 * @return mixed
+	 */
 	public function isRepositoryValid(ExecutionContext $context) {
 		$propertyPath = $context->getPropertyPath() . '.repository';
 		$context->setPropertyPath($propertyPath);
@@ -126,10 +138,16 @@ class Package {
 		}
 	}
 
+	/**
+	 * @param $repository
+	 */
 	public function setEntityRepository($repository) {
 		$this->entityRepository = $repository;
 	}
 
+	/**
+	 * @param ExecutionContext $context
+	 */
 	public function isPackageUnique(ExecutionContext $context) {
 		try {
 			if ($this->entityRepository->findOneByName($this->name)) {
@@ -254,7 +272,7 @@ class Package {
 	/**
 	 * Get repository
 	 *
-	 * @return string $repository
+	 * @return Doctrine\Common\Collections\Collection<TYPO3\ArtifactServer\Domain\Model\Version> $repository
 	 */
 	public function getRepository() {
 		return $this->repository;
@@ -272,7 +290,7 @@ class Package {
 	/**
 	 * Get versions
 	 *
-	 * @return string $versions
+	 * @return Doctrine\Common\Collections\Collection $versions
 	 */
 	public function getVersions() {
 		return $this->versions;
