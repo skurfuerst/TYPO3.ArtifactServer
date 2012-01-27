@@ -17,36 +17,44 @@ use TYPO3\FLOW3\Annotations as FLOW3;
 class WorkerCommandController extends \TYPO3\FLOW3\MVC\Controller\CommandController {
 
 	/**
-	 * @var \Pheanstalk
+	 * @var \TYPO3\ArtifactServer\Worker\Queue
+	 *
+	 * @FLOW3\Inject
 	 */
-	protected  $pheanstalk;
+	protected $queue;
 
 	/**
-	 * Constructs the controller
+	 * @var \TYPO3\FLOW3\Persistence\Doctrine\PersistenceManager
 	 *
+	 * @FLOW3\Inject
 	 */
-	public function __construct() {
-		parent::__construct();
-		// Start beanstalk with "beanstalkd -d -l 127.0.0.1 -p 11300" command
-		$this->pheanstalk = new \Pheanstalk('127.0.0.1');
-	}
+	protected $persistenceManager;
+
+	/**
+	 * @var int
+	 */
+	protected $memoryLimit = 52428800;
 
 	/**
 	 *
 	 */
 	public function listenCommand() {
 		$this->outputLine('beginning to wait');
+		$convert = function ($size) {
+			$unit=array('b','kb','mb','gb','tb','pb');
+			return @round($size/pow(1024,($i=floor(log($size,1024)))),2).' '.$unit[$i];
+		};
 		while(1) {
 			$this->outputLine('waiting for job');
-			$job = $this->pheanstalk->watch('test')->reserve();
+			$job = $this->queue->watch('test')->reserve();
 			$this->outputLine('job:' . $job->getData());
-			$this->pheanstalk->delete($job);
+			$this->queue->delete($job);
 
 			$memory = memory_get_usage();
-			$this->outputLine('memory:' . $memory);
+			$this->outputLine('memory:' . $convert($memory) . '/' . $convert($this->memoryLimit));
 
-			if ($memory > 1000000) {
-				$this->outputLine('exiting run due to memory limit');
+			if ($memory > $this->memoryLimit) {
+				$this->outputLine('exiting run due to memory limit at ' . $convert($this->memoryLimit));
 			}
 			usleep(10);
 		}
@@ -54,10 +62,24 @@ class WorkerCommandController extends \TYPO3\FLOW3\MVC\Controller\CommandControl
 
 	/**
 	 *
-	 * @param string $jobData
+	 * @param mixed $jobData
 	 */
-	public function addCommand($jobData) {
-		$this->pheanstalk->useTube('test')->put($jobData);
+	public function addCommand() {
+		// We have to persist all data before we populate the worker que
+		$this->persistenceManager->persistAll();
+		$args = Array();
+		foreach (func_get_args() as $arg) {
+			if (!is_scalar($arg) && is_object($arg)) {
+				$identifierObject = new \stdClass();
+				$identifierObject->objectType = get_class($arg);
+				$identifierObject->identifier = $this->persistenceManager->getIdentifierByObject($arg);
+				$args[] = $identifierObject;
+			} else {
+				$args[] = $arg;
+			}
+		}
+		$jobData = json_encode($args);
+		$this->queue->useTube('test')->put($jobData);
 		$this->outputLine("pushed: " . $jobData);
 	}
 
@@ -74,9 +96,11 @@ class WorkerCommandController extends \TYPO3\FLOW3\MVC\Controller\CommandControl
 		if ($arguments !== array()) {
 			$text = vsprintf($text, $arguments);
 		}
-		$this->response->appendContent($text);
-		$this->response->send();
-		$this->response->setContent('');
+		if ($this->response) {
+			$this->response->appendContent($text);
+			$this->response->send();
+			$this->response->setContent('');
+		}
 	}
 
 

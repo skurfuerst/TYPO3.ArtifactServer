@@ -44,11 +44,12 @@ class Package {
 
 	/**
 	 * @ORM\OneToMany(mappedBy="package")
-	 * @var Doctrine\Common\Collections\Collection<TYPO3\ArtifactServer\Domain\Model\Version>
+	 * @var \Doctrine\Common\Collections\Collection<\TYPO3\ArtifactServer\Domain\Model\Version>
 	 */
 	protected $versions;
 
 	/**
+	 * @FLOW3\Identity
 	 * @var string
 	 */
 	protected $repository;
@@ -74,6 +75,12 @@ class Package {
 	 * @var \DateTime
 	 */
 	protected $indexedAt;
+
+	/**
+	 * @var \Composer\Repository\Vcs\VcsDriverInterface
+	 * @FLOW3\Transient
+	 */
+	protected $repositoryClass;
 
 	/**
 	 *
@@ -108,57 +115,58 @@ class Package {
 		return $data;
 	}
 
-	/**
-	 * @param ExecutionContext $context
-	 * @return mixed
-	 */
-	public function isRepositoryValid(ExecutionContext $context) {
-		$propertyPath = $context->getPropertyPath() . '.repository';
-		$context->setPropertyPath($propertyPath);
-
-		$repo = $this->repositoryClass;
-		if (!$repo) {
-			$context->addViolation('No valid/supported repository was found at the given URL', array(), null);
-			return;
-		}
-		try {
-			$information = $repo->getComposerInformation($repo->getRootIdentifier());
-
-			if (!isset($information['name']) || !$information['name']) {
-				$context->addViolation('The package name was not found in the composer.json, make sure there is a name present.', array(), null);
-				return;
-			}
-
-			if (!preg_match('{^[a-z0-9_.-]+/[a-z0-9_.-]+$}i', $information['name'])) {
-				$context->addViolation('The package name ' . $information['name'] . ' is invalid, it should have a vendor name, a forward slash, and a package name, matching <em>[a-z0-9_.-]+/[a-z0-9_.-]+</em>.', array(), null);
-				return;
-			}
-		} catch (\UnexpectedValueException $e) {
-			$context->addViolation('We had problems parsing your composer.json file, the parser reports: ' . $e->getMessage(), array(), null);
-		}
-	}
-
-	/**
-	 * @param $repository
-	 */
-	public function setEntityRepository($repository) {
-		$this->entityRepository = $repository;
-	}
-
-	/**
-	 * @param ExecutionContext $context
-	 */
-	public function isPackageUnique(ExecutionContext $context) {
-		try {
-			if ($this->entityRepository->findOneByName($this->name)) {
-				$propertyPath = $context->getPropertyPath() . '.repository';
-				$context->setPropertyPath($propertyPath);
-				$context->addViolation('A package with the name ' . $this->name . ' already exists.', array(), null);
-			}
-		} catch (\Doctrine\ORM\NoResultException $e) {
-
-		}
-	}
+// TODO reenable when used
+//	/**
+//	 * @param ExecutionContext $context
+//	 * @return mixed
+//	 */
+//	public function isRepositoryValid(ExecutionContext $context) {
+//		$propertyPath = $context->getPropertyPath() . '.repository';
+//		$context->setPropertyPath($propertyPath);
+//
+//		$repo = $this->repositoryClass;
+//		if (!$repo) {
+//			$context->addViolation('No valid/supported repository was found at the given URL', array(), null);
+//			return;
+//		}
+//		try {
+//			$information = $repo->getComposerInformation($repo->getRootIdentifier());
+//
+//			if (!isset($information['name']) || !$information['name']) {
+//				$context->addViolation('The package name was not found in the composer.json, make sure there is a name present.', array(), null);
+//				return;
+//			}
+//
+//			if (!preg_match('{^[a-z0-9_.-]+/[a-z0-9_.-]+$}i', $information['name'])) {
+//				$context->addViolation('The package name ' . $information['name'] . ' is invalid, it should have a vendor name, a forward slash, and a package name, matching <em>[a-z0-9_.-]+/[a-z0-9_.-]+</em>.', array(), null);
+//				return;
+//			}
+//		} catch (\UnexpectedValueException $e) {
+//			$context->addViolation('We had problems parsing your composer.json file, the parser reports: ' . $e->getMessage(), array(), null);
+//		}
+//	}
+//
+//	/**
+//	 * @param $repository
+//	 */
+//	public function setEntityRepository($repository) {
+//		$this->entityRepository = $repository;
+//	}
+//
+//	/**
+//	 * @param ExecutionContext $context
+//	 */
+//	public function isPackageUnique(ExecutionContext $context) {
+//		try {
+//			if ($this->entityRepository->findOneByName($this->name)) {
+//				$propertyPath = $context->getPropertyPath() . '.repository';
+//				$context->setPropertyPath($propertyPath);
+//				$context->addViolation('A package with the name ' . $this->name . ' already exists.', array(), null);
+//			}
+//		} catch (\Doctrine\ORM\NoResultException $e) {
+//
+//		}
+//	}
 
 	/**
 	 * Get id
@@ -258,6 +266,7 @@ class Package {
 		try {
 			$repository = new VcsRepository(array('url' => $repository));
 
+			/** @var $repo \Composer\Repository\Vcs\VcsDriverInterface */
 			$repo = $this->repositoryClass = $repository->getDriver();
 			if (!$repo) {
 				return;
@@ -272,7 +281,7 @@ class Package {
 	/**
 	 * Get repository
 	 *
-	 * @return Doctrine\Common\Collections\Collection<TYPO3\ArtifactServer\Domain\Model\Version> $repository
+	 * @return \Doctrine\Common\Collections\Collection<TYPO3\ArtifactServer\Domain\Model\Version> $repository
 	 */
 	public function getRepository() {
 		return $this->repository;
@@ -290,7 +299,7 @@ class Package {
 	/**
 	 * Get versions
 	 *
-	 * @return Doctrine\Common\Collections\Collection $versions
+	 * @return \Doctrine\Common\Collections\Collection $versions
 	 */
 	public function getVersions() {
 		return $this->versions;

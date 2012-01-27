@@ -43,7 +43,7 @@ class Author {
 	protected $homepage;
 
 	/**
-	 * @var Doctrine\Common\Collections\Collection<\TYPO3\ArtifactServer\Domain\Model\Version>
+	 * @var \Doctrine\Common\Collections\Collection<\TYPO3\ArtifactServer\Domain\Model\Version>
 	 * @ORM\ManyToMany(mappedBy="authors")
 	 */
 	protected $versions;
@@ -59,11 +59,17 @@ class Author {
 	 */
 	protected $updatedAt;
 
+	/**
+	 *
+	 */
 	public function __construct() {
 		$this->versions = new ArrayCollection();
 		$this->createdAt = new \DateTime;
 	}
 
+	/**
+	 * @return array
+	 */
 	public function toArray() {
 		return array(
 			'name' => $this->getName(),
@@ -102,7 +108,7 @@ class Author {
 	/**
 	 * Set createdAt
 	 *
-	 * @param datetime $createdAt
+	 * @param \DateTime $createdAt
 	 */
 	public function setCreatedAt($createdAt) {
 		$this->createdAt = $createdAt;
@@ -111,7 +117,7 @@ class Author {
 	/**
 	 * Get createdAt
 	 *
-	 * @return datetime $createdAt
+	 * @return \DateTime $createdAt
 	 */
 	public function getCreatedAt() {
 		return $this->createdAt;
@@ -129,7 +135,7 @@ class Author {
 	/**
 	 * Get versions
 	 *
-	 * @return string $versions
+	 * @return \Doctrine\Common\Collections\Collection $versions
 	 */
 	public function getVersions() {
 		return $this->versions;
@@ -165,7 +171,7 @@ class Author {
 	/**
 	 * Get email
 	 *
-	 * @return text
+	 * @return string
 	 */
 	public function getEmail() {
 		return $this->email;
@@ -183,7 +189,7 @@ class Author {
 	/**
 	 * Get homepage
 	 *
-	 * @return text
+	 * @return string
 	 */
 	public function getHomepage() {
 		return $this->homepage;

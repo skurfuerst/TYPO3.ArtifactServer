@@ -48,13 +48,13 @@ class Version {
 	protected $extra = array();
 
 	/**
-	 * @var \Doctrine\Common\Collections\Collection<TYPO3\ArtifactServer\Domain\Model\Tag>
+	 * @var \Doctrine\Common\Collections\Collection<\TYPO3\ArtifactServer\Domain\Model\Tag>
 	 * @ORM\ManyToMany(inversedBy="versions")
 	 */
 	protected $tags;
 
 	/**
-	 * @var TYPO3\ArtifactServer\Domain\Model\Package
+	 * @var \TYPO3\ArtifactServer\Domain\Model\Package
 	 * @ORM\ManyToOne(inversedBy="versions")
 	 */
 	protected $package;
@@ -166,6 +166,9 @@ class Version {
 	 */
 	protected $releasedAt;
 
+	/**
+	 *
+	 */
 	public function __construct() {
 		$this->tags = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->require = new \Doctrine\Common\Collections\ArrayCollection();
@@ -179,12 +182,17 @@ class Version {
 		$this->updatedAt = new \DateTime;
 	}
 
+	/**
+	 * @return array
+	 */
 	public function toArray() {
 		$tags = array();
+		/** @var $tag \TYPO3\ArtifactServer\Domain\Model\Tag */
 		foreach ($this->getTags() as $tag) {
 			$tags[] = $tag->getName();
 		}
 		$authors = array();
+		/** @var $author \TYPO3\ArtifactServer\Domain\Model\Author */
 		foreach ($this->getAuthors() as $author) {
 			$authors[] = $author->toArray();
 		}
@@ -220,6 +228,7 @@ class Version {
 		);
 
 		foreach ($supportedLinkTypes as $linkType) {
+			/** @var $link \TYPO3\ArtifactServer\Domain\Model\AbstractPackageLink */
 			foreach ($this->{'get' . $linkType}() as $link) {
 				$link = $link->toArray();
 				$data[$linkType][key($link)] = current($link);
@@ -229,6 +238,10 @@ class Version {
 		return $data;
 	}
 
+	/**
+	 * @param Version $version
+	 * @return bool
+	 */
 	public function equals(Version $version) {
 		return strtolower($version->getName()) === strtolower($this->getName())
 				&& strtolower($version->getNormalizedVersion()) === strtolower($this->getNormalizedVersion());
@@ -428,7 +441,7 @@ class Version {
 	/**
 	 * Set createdAt
 	 *
-	 * @param datetime $createdAt
+	 * @param \DateTime $createdAt
 	 */
 	public function setCreatedAt($createdAt) {
 		$this->createdAt = $createdAt;
@@ -437,7 +450,7 @@ class Version {
 	/**
 	 * Get createdAt
 	 *
-	 * @return datetime $createdAt
+	 * @return \DateTime $createdAt
 	 */
 	public function getCreatedAt() {
 		return $this->createdAt;
@@ -446,7 +459,7 @@ class Version {
 	/**
 	 * Set releasedAt
 	 *
-	 * @param datetime $releasedAt
+	 * @param \DateTime $releasedAt
 	 */
 	public function setReleasedAt($releasedAt) {
 		$this->releasedAt = $releasedAt;
@@ -455,7 +468,7 @@ class Version {
 	/**
 	 * Get releasedAt
 	 *
-	 * @return datetime $releasedAt
+	 * @return \DateTime $releasedAt
 	 */
 	public function getReleasedAt() {
 		return $this->releasedAt;
@@ -464,7 +477,7 @@ class Version {
 	/**
 	 * Set package
 	 *
-	 * @param TYPO3\ArtifactServer\Domain\Model\Package $package
+	 * @param \TYPO3\ArtifactServer\Domain\Model\Package $package
 	 */
 	public function setPackage(Package $package) {
 		$this->package = $package;
@@ -473,7 +486,7 @@ class Version {
 	/**
 	 * Get package
 	 *
-	 * @return TYPO3\ArtifactServer\Domain\Model\Package $package
+	 * @return \TYPO3\ArtifactServer\Domain\Model\Package $package
 	 */
 	public function getPackage() {
 		return $this->package;
@@ -482,7 +495,7 @@ class Version {
 	/**
 	 * Get tags
 	 *
-	 * @return Doctrine\Common\Collections\Collection $tags
+	 * @return \Doctrine\Common\Collections\Collection $tags
 	 */
 	public function getTags() {
 		return $this->tags;
@@ -491,7 +504,7 @@ class Version {
 	/**
 	 * Set updatedAt
 	 *
-	 * @param datetime $updatedAt
+	 * @param \DateTime $updatedAt
 	 */
 	public function setUpdatedAt($updatedAt) {
 		$this->updatedAt = $updatedAt;
@@ -500,7 +513,7 @@ class Version {
 	/**
 	 * Get updatedAt
 	 *
-	 * @return datetime $updatedAt
+	 * @return \DateTime $updatedAt
 	 */
 	public function getUpdatedAt() {
 		return $this->updatedAt;
@@ -509,7 +522,7 @@ class Version {
 	/**
 	 * Get authors
 	 *
-	 * @return Doctrine\Common\Collections\Collection
+	 * @return \Doctrine\Common\Collections\Collection
 	 */
 	public function getAuthors() {
 		return $this->authors;
@@ -590,7 +603,7 @@ class Version {
 	/**
 	 * Add tags
 	 *
-	 * @param TYPO3\ArtifactServer\Domain\Model\Tag $tag
+	 * @param \TYPO3\ArtifactServer\Domain\Model\Tag $tag
 	 */
 	public function addTag(\TYPO3\ArtifactServer\Domain\Model\Tag $tag) {
 		$this->tags[] = $tag;
@@ -599,7 +612,7 @@ class Version {
 	/**
 	 * Add authors
 	 *
-	 * @param TYPO3\ArtifactServer\Domain\Model\Author $authors
+	 * @param \TYPO3\ArtifactServer\Domain\Model\Author $authors
 	 */
 	public function addAuthor(\TYPO3\ArtifactServer\Domain\Model\Author $authors) {
 		$this->authors[] = $authors;
@@ -608,7 +621,7 @@ class Version {
 	/**
 	 * Add require
 	 *
-	 * @param TYPO3\ArtifactServer\Domain\Model\RequireLink $require
+	 * @param \TYPO3\ArtifactServer\Domain\Model\RequireLink $require
 	 */
 	public function addRequireLink(RequireLink $require) {
 		$this->require[] = $require;
@@ -617,7 +630,7 @@ class Version {
 	/**
 	 * Get require
 	 *
-	 * @return Doctrine\Common\Collections\Collection
+	 * @return \Doctrine\Common\Collections\Collection
 	 */
 	public function getRequire() {
 		return $this->require;
@@ -626,7 +639,7 @@ class Version {
 	/**
 	 * Add replace
 	 *
-	 * @param TYPO3\ArtifactServer\Domain\Model\ReplaceLink $replace
+	 * @param \TYPO3\ArtifactServer\Domain\Model\ReplaceLink $replace
 	 */
 	public function addReplaceLink(ReplaceLink $replace) {
 		$this->replace[] = $replace;
@@ -635,7 +648,7 @@ class Version {
 	/**
 	 * Get replace
 	 *
-	 * @return Doctrine\Common\Collections\Collection
+	 * @return \Doctrine\Common\Collections\Collection
 	 */
 	public function getReplace() {
 		return $this->replace;
@@ -644,7 +657,7 @@ class Version {
 	/**
 	 * Add conflict
 	 *
-	 * @param TYPO3\ArtifactServer\Domain\Model\ConflictLink $conflict
+	 * @param \TYPO3\ArtifactServer\Domain\Model\ConflictLink $conflict
 	 */
 	public function addConflictLink(ConflictLink $conflict) {
 		$this->conflict[] = $conflict;
@@ -653,7 +666,7 @@ class Version {
 	/**
 	 * Get conflict
 	 *
-	 * @return Doctrine\Common\Collections\Collection
+	 * @return \Doctrine\Common\Collections\Collection
 	 */
 	public function getConflict() {
 		return $this->conflict;
@@ -662,7 +675,7 @@ class Version {
 	/**
 	 * Add provide
 	 *
-	 * @param TYPO3\ArtifactServer\Domain\Model\ProvideLink $provide
+	 * @param \TYPO3\ArtifactServer\Domain\Model\ProvideLink $provide
 	 */
 	public function addProvideLink(ProvideLink $provide) {
 		$this->provide[] = $provide;
@@ -671,7 +684,7 @@ class Version {
 	/**
 	 * Get provide
 	 *
-	 * @return Doctrine\Common\Collections\Collection
+	 * @return \Doctrine\Common\Collections\Collection
 	 */
 	public function getProvide() {
 		return $this->provide;
@@ -680,7 +693,7 @@ class Version {
 	/**
 	 * Add recommend
 	 *
-	 * @param TYPO3\ArtifactServer\Domain\Model\RecommendLink $recommend
+	 * @param \TYPO3\ArtifactServer\Domain\Model\RecommendLink $recommend
 	 */
 	public function addRecommendLink(RecommendLink $recommend) {
 		$this->recommend[] = $recommend;
@@ -689,7 +702,7 @@ class Version {
 	/**
 	 * Get recommend
 	 *
-	 * @return Doctrine\Common\Collections\Collection
+	 * @return \Doctrine\Common\Collections\Collection
 	 */
 	public function getRecommend() {
 		return $this->recommend;
@@ -698,7 +711,7 @@ class Version {
 	/**
 	 * Add suggest
 	 *
-	 * @param TYPO3\ArtifactServer\Domain\Model\SuggestLink $suggest
+	 * @param \TYPO3\ArtifactServer\Domain\Model\SuggestLink $suggest
 	 */
 	public function addSuggestLink(SuggestLink $suggest) {
 		$this->suggest[] = $suggest;
@@ -707,12 +720,15 @@ class Version {
 	/**
 	 * Get suggest
 	 *
-	 * @return Doctrine\Common\Collections\Collection
+	 * @return \Doctrine\Common\Collections\Collection
 	 */
 	public function getSuggest() {
 		return $this->suggest;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function __toString() {
 		return $this->name . ' ' . $this->version . ' (' . $this->normalizedVersion . ')';
 	}

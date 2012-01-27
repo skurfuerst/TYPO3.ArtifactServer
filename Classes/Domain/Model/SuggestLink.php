@@ -14,7 +14,6 @@ namespace TYPO3\ArtifactServer\Domain\Model;
 
 use TYPO3\FLOW3\Annotations as FLOW3;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @FLOW3\Entity
@@ -23,7 +22,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class SuggestLink extends AbstractPackageLink {
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="TYPO3\ArtifactServer\Domain\Model\Version", inversedBy="suggest")
+	 * @var \TYPO3\ArtifactServer\Domain\Model\Version
+	 * @ORM\ManyToOne(inversedBy="suggest")
 	 */
 	protected $version;
 

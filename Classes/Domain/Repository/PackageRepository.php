@@ -82,4 +82,17 @@ class PackageRepository extends \TYPO3\FLOW3\Persistence\Doctrine\Repository
             ->addOrderBy('v.releasedAt', 'DESC');
         return $qb;
     }*/
+	/**
+	 * @param \TYPO3\ArtifactServer\Domain\Model\Package $package
+	 */
+	public function add($package) {
+		$isRepositoryAlreadyPresentQuery = $this->createQuery();
+		if ($isRepositoryAlreadyPresentQuery->matching($isRepositoryAlreadyPresentQuery->equals('repository', $package->getRepository()))->execute()->count() > 0) {
+			throw new \TYPO3\FLOW3\Cache\Exception\DuplicateIdentifierException('A package with the same repository url already exists.', 1327653290);
+		} else {
+			parent::add($package);
+		}
+	}
+
+
 }

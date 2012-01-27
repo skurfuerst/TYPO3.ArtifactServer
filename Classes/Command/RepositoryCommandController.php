@@ -9,7 +9,7 @@ namespace TYPO3\ArtifactServer\Command;
 
 use TYPO3\FLOW3\Annotations as FLOW3;
 use Composer\Repository\VcsRepository;
-use \TYPO3\FLOW3\Reflection\ObjectAccess;
+use TYPO3\FLOW3\Reflection\ObjectAccess;
 
 /**
  * Repository command controller for the TYPO3.Repository package
@@ -56,6 +56,7 @@ class RepositoryCommandController extends \TYPO3\FLOW3\MVC\Controller\CommandCon
 		$package = new \TYPO3\ArtifactServer\Domain\Model\Package();
 		$package->setRepository($repositoryUri);
 		$this->packageRepository->add($package);
+		$this->emitPackageAdded($package);
 		$this->outputLine("Added package");
 	}
 
@@ -97,18 +98,20 @@ class RepositoryCommandController extends \TYPO3\FLOW3\MVC\Controller\CommandCon
 				if ($version->getDevelopment() && $version->getUpdatedAt() < $start) {
 					$this->outputLine('Deleting stale version: ' . $version->getVersion());
 					$this->versionRepository->remove($version);
+					$this->emitPackageVersionRemoved($package, $version);
 				}
 			}
 
 			$package->setUpdatedAt(new \DateTime);
 			$package->setCrawledAt(new \DateTime);
 			$this->packageRepository->update($package);
+			$this->emitPackageUpdated($package);
 		}
 	}
 
 	/**
-	 * @param \TYPO3\ArtifactServer\Domain\Model\Package $package
-	 * @param \Composer\Package\PackageInterface $versionFromRepository
+	 * @param TYPO3\ArtifactServer\Domain\Model\Package $package
+	 * @param Composer\Package\PackageInterface $versionFromRepository
 	 * @return mixed
 	 */
 	protected function updateVersionInformation(\TYPO3\ArtifactServer\Domain\Model\Package $package, \Composer\Package\PackageInterface $versionFromRepository) {
@@ -137,9 +140,6 @@ class RepositoryCommandController extends \TYPO3\FLOW3\MVC\Controller\CommandCon
 		$this->setVersionProperties($version, $versionFromRepository);
 		$version->setDevelopment(substr($versionFromRepository->getVersion(), -4) === '-dev');
 		$version->setPackage($package);
-		if (!$package->getVersions()->contains($version)) {
-			$package->addVersions($version);
-		}
 
 		if (!$package->getVersions()->contains($version)) {
 			$package->addVersions($version);
@@ -153,14 +153,16 @@ class RepositoryCommandController extends \TYPO3\FLOW3\MVC\Controller\CommandCon
 
 		if ($versionExists === TRUE) {
 			$this->versionRepository->update($version);
+			$this->emitPackageVersionUpdated($package, $version);
 		} else {
 			$this->versionRepository->add($version);
+			$this->emitPackageVersionAdded($package, $version);
 		}
 	}
 
 	/**
-	 * @param \TYPO3\ArtifactServer\Domain\Model\Version $version
-	 * @param \Composer\Package\PackageInterface $versionFromRepository
+	 * @param TYPO3\ArtifactServer\Domain\Model\Version $version
+	 * @param Composer\Package\PackageInterface $versionFromRepository
 	 */
 	protected function setVersionProperties(\TYPO3\ArtifactServer\Domain\Model\Version $version, \Composer\Package\PackageInterface $versionFromRepository) {
 		$propertiesToMap = array(
@@ -182,9 +184,9 @@ class RepositoryCommandController extends \TYPO3\FLOW3\MVC\Controller\CommandCon
 	}
 
 	/**
-	 * @param \TYPO3\ArtifactServer\Domain\Model\Version $version
-	 * @param \Composer\Package\PackageInterface $versionFromRepository
-	 * @param \TYPO3\ArtifactServer\Domain\Model\Package $package
+	 * @param TYPO3\ArtifactServer\Domain\Model\Version $version
+	 * @param Composer\Package\PackageInterface $versionFromRepository
+	 * @param TYPO3\ArtifactServer\Domain\Model\Package $package
 	 */
 	protected function setSourceAndDistTypes(\TYPO3\ArtifactServer\Domain\Model\Version $version, \Composer\Package\PackageInterface $versionFromRepository, \TYPO3\ArtifactServer\Domain\Model\Package $package) {
 		if ($versionFromRepository->getSourceType()) {
@@ -211,8 +213,8 @@ class RepositoryCommandController extends \TYPO3\FLOW3\MVC\Controller\CommandCon
 	}
 
 	/**
-	 * @param \TYPO3\ArtifactServer\Domain\Model\Version $version
-	 * @param \Composer\Package\PackageInterface $versionFromRepository
+	 * @param TYPO3\ArtifactServer\Domain\Model\Version $version
+	 * @param Composer\Package\PackageInterface $versionFromRepository
 	 * @return void
 	 */
 	protected function setTags(\TYPO3\ArtifactServer\Domain\Model\Version $version, \Composer\Package\PackageInterface $versionFromRepository) {
@@ -225,8 +227,8 @@ class RepositoryCommandController extends \TYPO3\FLOW3\MVC\Controller\CommandCon
 	}
 
 	/**
-	 * @param \TYPO3\ArtifactServer\Domain\Model\Version $version
-	 * @param \Composer\Package\PackageInterface $versionFromRepository
+	 * @param TYPO3\ArtifactServer\Domain\Model\Version $version
+	 * @param Composer\Package\PackageInterface $versionFromRepository
 	 * @return void
 	 */
 	protected function setAuthors(\TYPO3\ArtifactServer\Domain\Model\Version $version, \Composer\Package\PackageInterface $versionFromRepository) {
@@ -273,8 +275,8 @@ class RepositoryCommandController extends \TYPO3\FLOW3\MVC\Controller\CommandCon
 	}
 
 	/**
-	 * @param \TYPO3\ArtifactServer\Domain\Model\Version $version
-	 * @param \Composer\Package\PackageInterface $versionFromRepository
+	 * @param TYPO3\ArtifactServer\Domain\Model\Version $version
+	 * @param Composer\Package\PackageInterface $versionFromRepository
 	 */
 	protected function setLinksToOtherPackages(\TYPO3\ArtifactServer\Domain\Model\Version $version, \Composer\Package\PackageInterface $versionFromRepository) {
 		$supportedLinkTypes = array(
@@ -312,6 +314,44 @@ class RepositoryCommandController extends \TYPO3\FLOW3\MVC\Controller\CommandCon
 				$link->setVersion($version);
 			}
 		}
+	}
+
+	/**
+	 * @param TYPO3\ArtifactServer\Domain\Model\Package $package
+	 * @param TYPO3\ArtifactServer\Domain\Model\Version $version
+	 * @FLOW3\Signal
+	 */
+	protected function emitPackageVersionAdded(\TYPO3\ArtifactServer\Domain\Model\Package $package, \TYPO3\ArtifactServer\Domain\Model\Version $version) {
+	}
+
+	/**
+	 * @param TYPO3\ArtifactServer\Domain\Model\Package $package
+	 * @param TYPO3\ArtifactServer\Domain\Model\Version $version
+	 * @FLOW3\Signal
+	 */
+	protected function emitPackageVersionUpdated(\TYPO3\ArtifactServer\Domain\Model\Package $package, \TYPO3\ArtifactServer\Domain\Model\Version $version) {
+	}
+
+	/**
+	 * @param TYPO3\ArtifactServer\Domain\Model\Package $package
+	 * @param TYPO3\ArtifactServer\Domain\Model\Version $version
+	 * @FLOW3\Signal
+	 */
+	protected function emitPackageVersionRemoved(\TYPO3\ArtifactServer\Domain\Model\Package $package, \TYPO3\ArtifactServer\Domain\Model\Version $version) {
+	}
+
+	/**
+	 * @param TYPO3\ArtifactServer\Domain\Model\Package $package
+	 * @FLOW3\Signal
+	 */
+	protected function emitPackageAdded(\TYPO3\ArtifactServer\Domain\Model\Package $package) {
+	}
+
+	/**
+	 * @param TYPO3\ArtifactServer\Domain\Model\Package $package
+	 * @FLOW3\Signal
+	 */
+	protected function emitPackageUpdated(\TYPO3\ArtifactServer\Domain\Model\Package $package) {
 	}
 
 }

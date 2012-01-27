@@ -34,3 +34,10 @@ SandstormMedia:
             type: t3package:updatedAt
           releasedAt:
             type: t3package:releasedAt
+
+TYPO3:
+  ArtifactServer:
+    queue:
+      backendOptions:
+        host: '127.0.0.1'
+        port: '11300'

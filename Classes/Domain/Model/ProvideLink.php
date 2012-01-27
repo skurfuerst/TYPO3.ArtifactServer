@@ -21,7 +21,8 @@ use Doctrine\ORM\Mapping as ORM;
 class ProvideLink extends AbstractPackageLink {
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="TYPO3\ArtifactServer\Domain\Model\Version", inversedBy="provide")
+	 * @var \TYPO3\ArtifactServer\Domain\Model\Version
+	 * @ORM\ManyToOne(inversedBy="provide")
 	 */
 	protected $version;
 

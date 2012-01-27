@@ -32,14 +32,23 @@ abstract class AbstractPackageLink {
 	 */
 	protected $packageVersion;
 
+	/**
+	 * @return array
+	 */
 	public function toArray() {
 		return array($this->getPackageName() => $this->getPackageVersion());
 	}
 
+	/**
+	 * @param $id
+	 */
 	public function setId($id) {
 		$this->id = $id;
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public function getId() {
 		return $this->id;
 	}
@@ -83,7 +92,7 @@ abstract class AbstractPackageLink {
 	/**
 	 * Set version
 	 *
-	 * @param TYPO3\ArtifactServer\Domain\Model\Version $version
+	 * @param \TYPO3\ArtifactServer\Domain\Model\Version $version
 	 */
 	public function setVersion(\TYPO3\ArtifactServer\Domain\Model\Version $version) {
 		$this->version = $version;
@@ -92,12 +101,15 @@ abstract class AbstractPackageLink {
 	/**
 	 * Get version
 	 *
-	 * @return TYPO3\ArtifactServer\Domain\Model\Version
+	 * @return \TYPO3\ArtifactServer\Domain\Model\Version
 	 */
 	public function getVersion() {
 		return $this->version;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function __toString() {
 		return $this->packageName . ' ' . $this->packageVersion;
 	}
